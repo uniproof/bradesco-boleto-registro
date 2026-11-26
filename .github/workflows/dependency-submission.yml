@@ -23,12 +23,12 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      # Private Uniproof artifacts live in GitHub Packages. GITHUB_PACKAGES_TOKEN
+      # Private Uniproof artifacts live in GitHub Packages. PACKAGES_READ_TOKEN
       # (a token with read:packages) is preferred; the job token is the fallback
       # and only works for packages that grant this repository Actions access.
       - name: Write Maven settings for GitHub Packages
         env:
-          PACKAGES_TOKEN: ${{ secrets.GITHUB_PACKAGES_TOKEN || github.token }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_READ_TOKEN || github.token }}
         run: |
           repos="uniproof-java-service uniproof-back-connector arisp-integration document-processor uniproof-blockchain-services"
           {
@@ -49,7 +49,7 @@ jobs:
       - name: Submit dependency snapshot
         uses: advanced-security/maven-dependency-submission-action@v4.1.1
         env:
-          PACKAGES_TOKEN: ${{ secrets.GITHUB_PACKAGES_TOKEN || github.token }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_READ_TOKEN || github.token }}
         with:
           settings-file: ${{ runner.temp }}/dependency-settings.xml
           ignore-maven-wrapper: true
